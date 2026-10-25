@@ -1,0 +1,1056 @@
+<!doctype html>
+<html lang="hi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>GIIT | हमारे कोर्स और करियर</title>
+    <style>
+      :root {
+        --orange: #f36b3f;
+        --red: #c92f35;
+        --navy: #17284b;
+        --cream: #fffaf4;
+        --muted: #7b8291;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        overflow: hidden;
+      }
+      body {
+        font-family:
+          Inter,
+          Segoe UI,
+          Arial,
+          sans-serif;
+        color: var(--navy);
+        background: var(--cream);
+      }
+      button,
+      input {
+        font: inherit;
+      }
+      .app {
+        height: 100dvh;
+        width: 100vw;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        isolation: isolate;
+        overflow: hidden;
+      }
+      .app:before,
+      .app:after {
+        content: "";
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(2px);
+        z-index: -1;
+        pointer-events: none;
+      }
+      .app:before {
+        width: 40vw;
+        height: 40vw;
+        right: -15vw;
+        top: -24vw;
+        background: radial-gradient(
+          circle,
+          #ffe0c9 0,
+          rgba(255, 224, 201, 0) 70%
+        );
+        animation: float 12s ease-in-out infinite alternate;
+      }
+      .app:after {
+        width: 35vw;
+        height: 35vw;
+        left: -20vw;
+        bottom: -25vw;
+        background: radial-gradient(
+          circle,
+          #ffd9d0 0,
+          rgba(255, 217, 208, 0) 70%
+        );
+        animation: float 10s ease-in-out infinite alternate-reverse;
+      }
+      @keyframes float {
+        from {
+          transform: translate(0, 0) scale(1);
+        }
+        to {
+          transform: translate(3vw, -2vh) scale(1.12);
+        }
+      }
+      header {
+        height: 82px;
+        flex: 0 0 82px;
+        padding: 12px 3.2vw;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        border-bottom: 1px solid #eeded3;
+        background: rgba(255, 250, 244, 0.82);
+        backdrop-filter: blur(14px);
+      }
+      .logo {
+        width:200px;
+      }
+      .brand {
+        font-size: clamp(16px, 1.6vw, 23px);
+        font-weight: 900;
+        letter-spacing: 0.4px;
+        color: #8d2b28;
+      }
+      .brand-sub {
+        font-size: 10px;
+        letter-spacing: 2px;
+        font-weight: 800;
+        color: #df633e;
+        margin-top: 4px;
+      }
+      .header-right {
+        margin-left: auto;
+        text-align: right;
+      }
+      .eyebrow {
+        font-size: 10px;
+        letter-spacing: 2px;
+        color: #d45b39;
+        font-weight: 900;
+      }
+      .tagline {
+        font-size: 12px;
+        color: #727888;
+        margin-top: 5px;
+      }
+      main {
+        flex: 1;
+        min-height: 0;
+        display: grid;
+        grid-template-columns: minmax(290px, 31%) minmax(0, 69%);
+        gap: clamp(14px, 2vw, 28px);
+        padding: clamp(15px, 2.2vh, 25px) 3.2vw clamp(12px, 2vh, 20px);
+      }
+      .sidebar,
+      .detail {
+        min-height: 0;
+        min-width: 0;
+        border: 1px solid #efded2;
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.78);
+        box-shadow: 0 12px 40px rgba(102, 57, 39, 0.07);
+        backdrop-filter: blur(10px);
+      }
+      .sidebar {
+        padding: clamp(14px, 1.5vw, 22px);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+      .side-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        margin-bottom: 12px;
+      }
+      .side-title h2 {
+        font-size: clamp(17px, 1.5vw, 22px);
+        margin: 0;
+      }
+      .count {
+        font-size: 11px;
+        color: #b94a31;
+        background: #fff0e8;
+        padding: 7px 9px;
+        border-radius: 20px;
+        font-weight: 800;
+        white-space: nowrap;
+      }
+      .search {
+        width: 100%;
+        height: 39px;
+        border: 1px solid #ead8cc;
+        border-radius: 11px;
+        background: #fffaf6;
+        padding: 0 12px;
+        outline: none;
+        font-size: 12px;
+        margin-bottom: 12px;
+      }
+      .search:focus {
+        border-color: var(--orange);
+        box-shadow: 0 0 0 3px #f36b3f18;
+      }
+      .course-list {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 7px;
+        overflow-y: auto;
+        min-height: 0;
+        padding: 1px 5px 3px 1px;
+        scrollbar-width: thin;
+        scrollbar-color: #e9b7a3 transparent;
+      }
+      .course {
+        width: 100%;
+        min-height: 49px;
+        border: 1px solid transparent;
+        background: transparent;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        padding: 8px 10px;
+        text-align: left;
+        cursor: pointer;
+        transition:
+          transform 0.22s,
+          background 0.22s,
+          border-color 0.22s;
+        animation: rise 0.35s both;
+      }
+      .course:hover {
+        background: #fff4ed;
+        transform: translateX(3px);
+      }
+      .course.active {
+        background: linear-gradient(100deg, #fff0e7, #fff9f4);
+        border-color: #f0b69d;
+        box-shadow: inset 3px 0 var(--orange);
+      }
+      @keyframes rise {
+        from {
+          opacity: 0;
+          transform: translateY(7px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .course-icon {
+        width: 31px;
+        height: 31px;
+        flex: 0 0 31px;
+        display: grid;
+        place-items: center;
+        border-radius: 10px;
+        background: #fff0e7;
+        color: #d85434;
+        font-size: 15px;
+        font-weight: 900;
+      }
+      .course.active .course-icon {
+        background: linear-gradient(135deg, #ef6b42, #c92f35);
+        color: white;
+      }
+      .course-name {
+        font-size: clamp(12px, 0.95vw, 14px);
+        font-weight: 800;
+        line-height: 1.2;
+      }
+      .course-hint {
+        font-size: 10px;
+        color: #8c8e98;
+        margin-top: 3px;
+      }
+      .chevron {
+        margin-left: auto;
+        color: #d56a4a;
+        font-size: 20px;
+      }
+      .sidebar-foot {
+        border-top: 1px solid #f0e3db;
+        padding-top: 11px;
+        margin-top: 8px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: #8d817a;
+        font-size: 10px;
+      }
+      .detail {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+      .detail-top {
+        position: relative;
+        overflow: hidden;
+        min-height: 33%;
+        padding: clamp(20px, 3vw, 38px);
+        background:
+          linear-gradient(
+            90deg,
+            rgba(65, 22, 30, 0.88) 0%,
+            rgba(106, 30, 35, 0.62) 42%,
+            rgba(82, 26, 25, 0.12) 100%
+          ),
+          var(--course-image) center/cover no-repeat,
+          linear-gradient(115deg, #8f292a, #f47a45);
+        color: white;
+        transition: background-image 0.35s ease;
+      }
+      .detail-top:before {
+        content: "";
+        position: absolute;
+        width: 290px;
+        height: 290px;
+        right: -50px;
+        top: -145px;
+        border: 1px solid #ffffff38;
+        border-radius: 50%;
+        box-shadow:
+          0 0 0 25px #ffffff0b,
+          0 0 0 55px #ffffff09;
+        animation: orbit 18s linear infinite;
+        pointer-events: none;
+      }
+      .detail-top:after {
+        content: "";
+        position: absolute;
+        width: 170px;
+        height: 170px;
+        right: 12%;
+        bottom: -130px;
+        border: 1px solid #ffffff55;
+        border-radius: 50%;
+        animation: orbit 14s linear infinite reverse;
+      }
+      @keyframes orbit {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      .top-content {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 15px;
+      }
+      .course-label {
+        font-size: 10px;
+        letter-spacing: 2px;
+        font-weight: 900;
+        opacity: 0.8;
+      }
+      .detail h1 {
+        font-size: clamp(28px, 3.3vw, 47px);
+        line-height: 1.05;
+        margin: 13px 0 9px;
+        letter-spacing: -1px;
+      }
+      .subtitle {
+        font-size: clamp(12px, 1.1vw, 15px);
+        opacity: 0.92;
+      }
+      .course-number {
+        font-size: clamp(32px, 5vw, 68px);
+        font-weight: 900;
+        color: #ffffff2b;
+        line-height: 1;
+      }
+      .chips {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-top: 19px;
+      }
+      .chip {
+        font-size: 10px;
+        font-weight: 800;
+        border: 1px solid #ffffff55;
+        background: #ffffff16;
+        padding: 7px 10px;
+        border-radius: 30px;
+      }
+      .detail-body {
+        padding: clamp(17px, 2.5vw, 30px);
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+        flex: 1;
+      }
+      .body-grid {
+        display: grid;
+        grid-template-columns: 1fr 1.1fr;
+        gap: clamp(16px, 2.2vw, 30px);
+      }
+      .section-label {
+        font-size: 10px;
+        font-weight: 900;
+        letter-spacing: 1.8px;
+        color: #d45b39;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+      }
+      .overview {
+        font-size: clamp(12px, 1.05vw, 14px);
+        line-height: 1.75;
+        color: #687082;
+        margin: 0;
+        max-width: 48ch;
+      }
+      .skill-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+      .skill {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 37px;
+        padding: 9px 10px;
+        border: 1px solid #f0e3da;
+        background: #fffaf6;
+        border-radius: 10px;
+        font-size: clamp(10px, 0.9vw, 12px);
+        font-weight: 700;
+        animation: rise 0.4s both;
+      }
+      .tick {
+        width: 19px;
+        height: 19px;
+        display: grid;
+        place-items: center;
+        border-radius: 6px;
+        background: #e6f6eb;
+        color: #19864a;
+        font-size: 11px;
+        flex: 0 0 19px;
+      }
+      .future {
+        margin-top: 15px;
+        padding: 13px 15px;
+        border-radius: 12px;
+        background: linear-gradient(100deg, #fff3e8, #fffaf6);
+        border: 1px solid #f1dfd2;
+      }
+      .future-title {
+        font-size: 10px;
+        letter-spacing: 1px;
+        font-weight: 900;
+        color: #c64d31;
+        margin-bottom: 7px;
+      }
+      .future-text {
+        font-size: clamp(10px, 0.95vw, 12px);
+        line-height: 1.55;
+        color: #596174;
+      }
+      .bottom-row {
+        margin-top: auto;
+        padding-top: 18px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .stat {
+        padding: 12px 15px;
+        border: 1px solid #efdfd4;
+        border-radius: 12px;
+        min-width: 120px;
+        background: #fffdfb;
+      }
+      .stat small {
+        display: block;
+        color: #99909a;
+        font-size: 9px;
+        font-weight: 900;
+        letter-spacing: 1px;
+        margin-bottom: 6px;
+      }
+      .stat strong {
+        font-size: 13px;
+      }
+      .actions {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        margin-left: auto;
+      }
+      .btn {
+        border: 0;
+        border-radius: 10px;
+        padding: 12px 17px;
+        font-size: 12px;
+        font-weight: 900;
+        cursor: pointer;
+        transition:
+          transform 0.2s,
+          box-shadow 0.2s;
+      }
+      .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px #b9422925;
+      }
+      .btn-secondary {
+        background: #fff0e7;
+        color: #a53a2b;
+      }
+      .btn-primary {
+        background: linear-gradient(110deg, #e95837, #c92f35);
+        color: white;
+      }
+      .progress {
+        height: 4px;
+        background: #f7e8df;
+      }
+      .progress span {
+        height: 100%;
+        display: block;
+        background: linear-gradient(90deg, #f3a23d, #c92f35);
+        transition: width 0.35s;
+      }
+      footer {
+        height: 31px;
+        flex: 0 0 31px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        font-size: 10px;
+        color: #96857c;
+      }
+      @media (max-width: 760px) {
+        header {
+          height: 70px;
+          flex-basis: 70px;
+          padding: 10px 14px;
+        }
+        .logo {
+          height: 44px;
+          width: 44px;
+        }
+        .header-right {
+          display: none;
+        }
+        main {
+          padding: 10px;
+          grid-template-columns: minmax(155px, 35%) minmax(0, 65%);
+          gap: 9px;
+        }
+        .sidebar,
+        .detail {
+          border-radius: 15px;
+        }
+        .sidebar {
+          padding: 9px;
+        }
+        .side-title {
+          align-items: flex-start;
+          flex-direction: column;
+          gap: 5px;
+        }
+        .side-title h2 {
+          font-size: 15px;
+        }
+        .count {
+          font-size: 9px;
+          padding: 5px 7px;
+        }
+        .search {
+          height: 34px;
+          padding: 0 8px;
+          font-size: 10px;
+        }
+        .course {
+          gap: 6px;
+          padding: 7px 5px;
+          min-height: 43px;
+        }
+        .course-icon {
+          width: 25px;
+          height: 25px;
+          flex-basis: 25px;
+          font-size: 12px;
+        }
+        .course-name {
+          font-size: 10px;
+        }
+        .course-hint {
+          font-size: 9px;
+        }
+        .chevron {
+          display: none;
+        }
+        .detail-top {
+          padding: 17px;
+          min-height: 30%;
+        }
+        .detail h1 {
+          font-size: clamp(21px, 4vw, 34px);
+        }
+        .course-number {
+          font-size: 35px;
+        }
+        .detail-body {
+          padding: 13px;
+        }
+        .body-grid {
+          grid-template-columns: 1fr;
+          gap: 13px;
+        }
+        .overview {
+          font-size: 11px;
+        }
+        .skill-grid {
+          gap: 5px;
+        }
+        .skill {
+          padding: 7px 6px;
+          font-size: 9px;
+          min-height: 31px;
+        }
+        .tick {
+          width: 15px;
+          height: 15px;
+          flex-basis: 15px;
+        }
+        .chips {
+          margin-top: 12px;
+        }
+        .chip {
+          font-size: 8px;
+          padding: 5px 7px;
+        }
+        .bottom-row {
+          flex-wrap: wrap;
+          padding-top: 10px;
+          gap: 6px;
+        }
+        .stat {
+          padding: 8px;
+          min-width: 0;
+          flex: 1;
+        }
+        .stat strong {
+          font-size: 10px;
+        }
+        .actions {
+          width: 100%;
+          margin-left: 0;
+        }
+        .btn {
+          flex: 1;
+          padding: 10px 7px;
+          font-size: 10px;
+        }
+        footer {
+          font-size: 9px;
+        }
+      }
+      @media (max-height: 650px) {
+        header {
+          height: 62px;
+          flex-basis: 62px;
+        }
+        .logo {
+          width: 40px;
+          height: 40px;
+        }
+        main {
+          padding-top: 8px;
+          padding-bottom: 6px;
+        }
+        .sidebar {
+          padding: 12px;
+        }
+        .course {
+          min-height: 39px;
+          padding: 5px 8px;
+        }
+        .course-icon {
+          width: 27px;
+          height: 27px;
+          flex-basis: 27px;
+        }
+        .detail-top {
+          padding: 18px 25px;
+        }
+        .detail h1 {
+          margin: 8px 0;
+        }
+        .chips {
+          margin-top: 10px;
+        }
+        .detail-body {
+          padding: 16px 22px;
+        }
+        .skill {
+          min-height: 30px;
+          padding: 6px 8px;
+        }
+        .bottom-row {
+          padding-top: 10px;
+        }
+        footer {
+          height: 23px;
+          flex-basis: 23px;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *:before,
+        *:after {
+          animation: none !important;
+          transition: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <header>
+        <!-- Replace logo.png with your actual GIIT logo file -->
+        <img
+          class="logo"
+          src="logo.jpeg"
+          alt="GIIT logo"
+          onerror="
+            this.style.display = 'none';
+            this.nextElementSibling.style.marginLeft = '0';
+          "
+        />
+        
+        <div class="header-right">
+          <div class="eyebrow">आज सीखें • कल आगे बढ़ें</div>
+          <div class="tagline">कोर्स चुनें • अपना भविष्य बनाएँ</div>
+        </div>
+      </header>
+      <main>
+        <aside class="sidebar">
+          <div class="side-title">
+            <h2>कोर्स चुनें</h2>
+            <span class="count" id="count">09 कोर्स</span>
+          </div>
+          <input
+            id="search"
+            class="search"
+            placeholder="⌕  कोर्स खोजें..."
+            aria-label="कोर्स खोजें"
+          />
+          <nav class="course-list" id="courseList" aria-label="कोर्स"></nav>
+          <div class="sidebar-foot">
+            <span>GIIT • कोर्स गाइड</span><span>2026 ↗</span>
+          </div>
+        </aside>
+        <section class="detail" aria-live="polite">
+          <div class="detail-top" id="detailTop">
+            <div class="top-content">
+              <div>
+                <div class="course-label" id="courseLabel">GIIT COURSE 01</div>
+                <h1 id="courseName">O Level</h1>
+                <div class="subtitle" id="courseSubtitle">
+                  NIELIT Computer Course
+                </div>
+                <div class="chips">
+                  <span class="chip" id="levelChip"
+                    >शुरुआती विद्यार्थियों के लिए</span
+                  ><span class="chip">प्रैक्टिकल ट्रेनिंग</span>
+                </div>
+              </div>
+              <div class="course-number" id="courseNumber">01</div>
+            </div>
+          </div>
+          <div class="progress">
+            <span id="progressBar" style="width: 11.11%"></span>
+          </div>
+          <div class="detail-body">
+            <div class="body-grid">
+              <div>
+                <div class="section-label">कोर्स की जानकारी</div>
+                <p class="overview" id="description"></p>
+              </div>
+              <div>
+                <div class="section-label">आप क्या सीखेंगे</div>
+                <div class="skill-grid" id="skills"></div>
+              </div>
+            </div>
+            <div class="future">
+              <div class="future-title">✦ आगे करियर के अवसर</div>
+              <div class="future-text" id="futureScope">
+                डिजिटल स्किल्स के साथ आगे की पढ़ाई, इंटर्नशिप और नौकरी के अवसरों
+                की तैयारी करें।
+              </div>
+            </div>
+            <div class="bottom-row">
+              <div class="stat">
+                <small>कोर्स की अवधि</small
+                ><strong id="duration">1 Year</strong>
+              </div>
+              <div class="stat">
+                <small>स्तर</small><strong id="level">Beginner</strong>
+              </div>
+              <div class="actions">
+                <button class="btn btn-secondary" id="prev">
+                  ← पिछला कोर्स</button
+                ><button class="btn btn-primary" id="next">अगला कोर्स →</button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+      <footer>
+        <span style="color: #e15e3a">✦</span> आपका कोर्स, आपका करियर!
+      </footer>
+    </div>
+    <script>
+      const courses = [
+        {
+          name: "O Level",
+          icon: "◎",
+          subtitle: "NIELIT Computer Course",
+          duration: "1 Year",
+          level: "Beginner",
+          description:
+            "कंप्यूटर एप्लिकेशन, प्रोग्रामिंग, वेब डिज़ाइन और डिजिटल स्किल्स की मज़बूत बुनियाद बनाएँ।",
+          skills: [
+            "IT Tools व नेटवर्क",
+            "वेब डिज़ाइनिंग",
+            "Python प्रोग्रामिंग",
+            "इंटरनेट व साइबर सुरक्षा",
+          ],
+          future:
+            "कंप्यूटर ऑपरेटर, जूनियर वेब डिज़ाइनर, प्रोग्रामिंग की आगे की पढ़ाई और सरकारी मान्यता प्राप्त कंप्यूटर योग्यता वाले अवसरों की तैयारी।",
+        },
+        {
+          name: "CCC",
+          icon: "▦",
+          subtitle: "Course on Computer Concepts",
+          duration: "Approx. 80 Hours",
+          level: "Beginner",
+          description:
+            "रोज़मर्रा के डिजिटल काम, ऑफिस एप्लिकेशन, ऑनलाइन संवाद और सुरक्षित इंटरनेट इस्तेमाल करना सीखें।",
+          skills: [
+            "कंप्यूटर की बुनियाद",
+            "LibreOffice",
+            "इंटरनेट व ईमेल",
+            "डिजिटल भुगतान व सुरक्षा",
+          ],
+          future:
+            "ऑफिस असिस्टेंट, डेटा एंट्री, डिजिटल सेवा केंद्र और रोज़मर्रा के कंप्यूटर कार्यों के लिए उपयोगी आधार।",
+        },
+        {
+          name: "Advanced Excel",
+          icon: "▤",
+          subtitle: "Spreadsheet & Data Skills",
+          duration: "Institute-defined",
+          level: "Intermediate",
+          description:
+            "फॉर्मूला, डेटा क्लीनिंग, सारांश और डैशबोर्ड से डेटा को उपयोगी रिपोर्ट में बदलना सीखें।",
+          skills: [
+            "VLOOKUP व XLOOKUP",
+            "Pivot Table व Charts",
+            "डेटा क्लीनिंग",
+            "रिपोर्ट व डैशबोर्ड",
+          ],
+          future:
+            "MIS एग्जीक्यूटिव, रिपोर्टिंग असिस्टेंट, ऑपरेशंस सपोर्ट और डेटा एनालिटिक्स की आगे की ट्रेनिंग।",
+        },
+        {
+          name: "Tally Prime",
+          icon: "₹",
+          subtitle: "Accounting & GST",
+          duration: "Institute-defined",
+          level: "Beginner",
+          description:
+            "कंप्यूटर पर अकाउंटिंग, बिज़नेस लेन-देन, स्टॉक और रिपोर्ट बनाना सीखें।",
+          skills: [
+            "कंपनी व लेजर सेटअप",
+            "वाउचर एंट्री",
+            "स्टॉक मैनेजमेंट",
+            "GST व अकाउंट रिपोर्ट",
+          ],
+          future:
+            "अकाउंटिंग असिस्टेंट, बिलिंग एग्जीक्यूटिव और छोटे व्यवसायों में अकाउंटिंग सपोर्ट की तैयारी।",
+        },
+        {
+          name: "Python Programming",
+          icon: "⌘",
+          subtitle: "Coding & Problem Solving",
+          duration: "Institute-defined",
+          level: "Beginner",
+          description:
+            "कोड लिखना, समस्याएँ हल करना और ऑटोमेशन व आगे की प्रोग्रामिंग के लिए आधार बनाना सीखें।",
+          skills: [
+            "Variables व Data Types",
+            "Conditions व Loops",
+            "Functions व Lists",
+            "छोटे प्रैक्टिकल प्रोजेक्ट",
+          ],
+          future:
+            "Python डेवलपमेंट, ऑटोमेशन, डेटा साइंस की आगे की पढ़ाई और सॉफ्टवेयर प्रोजेक्ट्स की नींव।",
+        },
+        {
+          name: "Web Design",
+          icon: "⌘",
+          subtitle: "HTML, CSS & JavaScript",
+          duration: "Institute-defined",
+          level: "Beginner",
+          description:
+            "शुरू से आकर्षक, मोबाइल-फ्रेंडली वेबसाइट बनाएँ और JavaScript से इंटरैक्शन जोड़ें।",
+          skills: [
+            "HTML से पेज बनाना",
+            "CSS से डिज़ाइन",
+            "JavaScript व DOM",
+            "Responsive वेबसाइट प्रोजेक्ट",
+          ],
+          future:
+            "वेब डिज़ाइनर, फ्रंट-एंड डेवलपर, फ्रीलांस वेबसाइट प्रोजेक्ट और UI/UX की आगे की सीख।",
+        },
+        {
+          name: "DCA",
+          icon: "▣",
+          subtitle: "Diploma in Computer Applications",
+          duration: "Institute-defined",
+          level: "Beginner",
+          description:
+            "ऑफिस टूल्स, डिजिटल कम्युनिकेशन और कंप्यूटर एप्लिकेशन में व्यावहारिक दक्षता पाएँ।",
+          skills: [
+            "कंप्यूटर की बुनियाद",
+            "ऑफिस एप्लिकेशन",
+            "इंटरनेट व ईमेल",
+            "डिजिटल प्रोडक्टिविटी",
+          ],
+          future:
+            "ऑफिस असिस्टेंट, कंप्यूटर ऑपरेटर और आगे ADCA, Excel, Tally या वेब डिज़ाइन सीखने का आधार।",
+        },
+        {
+          name: "ADCA",
+          icon: "▧",
+          subtitle: "Advanced Diploma in Computer Applications",
+          duration: "Institute-defined",
+          level: "Beginner–Intermediate",
+          description:
+            "कंप्यूटर एप्लिकेशन, शुरुआती प्रोग्रामिंग, डेटाबेस और ऑफिस वर्कफ़्लो की व्यावहारिक स्किल्स सीखें।",
+          skills: [
+            "Advanced Office Tools",
+            "C प्रोग्रामिंग",
+            "डेटाबेस की बुनियाद",
+            "अकाउंटिंग एप्लिकेशन",
+          ],
+          future:
+            "ऑफिस व डेटा कार्य, कंप्यूटर ऑपरेटर भूमिकाएँ और प्रोग्रामिंग/वेब डेवलपमेंट में आगे बढ़ने का आधार।",
+        },
+        {
+          name: "Java",
+          icon: "J",
+          subtitle: "Object-Oriented Programming",
+          duration: "Institute-defined",
+          level: "Intermediate",
+          description:
+            "छोटे प्रोग्राम बनाकर Java और ऑब्जेक्ट-ओरिएंटेड प्रोग्रामिंग की बुनियाद समझें।",
+          skills: [
+            "Java Syntax व Types",
+            "Classes व Objects",
+            "Inheritance व Polymorphism",
+            "Exceptions व Collections",
+          ],
+          future:
+            "Java डेवलपमेंट, Android की आगे की पढ़ाई, बैक-एंड प्रोग्रामिंग और सॉफ्टवेयर इंजीनियरिंग की तैयारी।",
+        },
+        {
+          name: "Web Development",
+          icon: "</>",
+          subtitle: "From Web Pages to Projects",
+          duration: "Institute-defined",
+          level: "Beginner–Intermediate",
+          description:
+            "स्टैटिक पेज से आगे बढ़कर रिस्पॉन्सिव और इंटरैक्टिव वेबसाइट प्रोजेक्ट बनाना सीखें।",
+          skills: [
+            "HTML व Semantic Structure",
+            "CSS Flexbox व Grid",
+            "JavaScript इंटरैक्शन",
+            "पोर्टफोलियो प्रोजेक्ट",
+          ],
+          future:
+            "फ्रंट-एंड डेवलपर, वेबसाइट डेवलपर, फ्रीलांस काम और आगे MERN/फुल-स्टैक डेवलपमेंट सीखने के अवसर।",
+        },
+      ];
+      let selected = 0,
+        query = "";
+      const $ = (id) => document.getElementById(id);
+      const courseImages = [
+        "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1400&q=85",
+        "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1400&q=85",
+        "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1400&q=85",
+        "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=1400&q=85",
+        "https://images.unsplash.com/photo-1526379095098-d400fd0bf935?auto=format&fit=crop&w=1400&q=85",
+        "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1400&q=85",
+        "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1400&q=85",
+        "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1400&q=85",
+        "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&w=1400&q=85",
+        "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1400&q=85",
+      ];
+      function drawList() {
+        const visible = courses
+          .map((c, i) => ({ ...c, i }))
+          .filter((c) =>
+            (c.name + " " + c.subtitle).toLowerCase().includes(query),
+          );
+        $("count").textContent =
+          String(visible.length).padStart(2, "0") + " कोर्स";
+        $("courseList").innerHTML =
+          visible
+            .map(
+              (c) =>
+                `<button class="course ${c.i === selected ? "active" : ""}" data-i="${c.i}" style="animation-delay:${Math.min(c.i, 8) * 25}ms"><span class="course-icon">${c.icon}</span><span><span class="course-name">${c.name}</span><br><span class="course-hint">विवरण देखें</span></span><span class="chevron">›</span></button>`,
+            )
+            .join("") ||
+          '<div style="padding:15px;font-size:12px;color:#8b7b73">No courses found. Try another search.</div>';
+        $("courseList")
+          .querySelectorAll("button")
+          .forEach((b) =>
+            b.addEventListener("click", () => selectCourse(+b.dataset.i)),
+          );
+      }
+      function selectCourse(i) {
+        selected = (i + courses.length) % courses.length;
+        const c = courses[selected],
+          n = String(selected + 1).padStart(2, "0");
+        $("detailTop").style.setProperty(
+          "--course-image",
+          `url("${courseImages[selected]}")`,
+        );
+        $("courseLabel").textContent =
+          "GIIT COURSE " + n + " / " + String(courses.length).padStart(2, "0");
+        $("courseName").textContent = c.name;
+        $("courseSubtitle").textContent = c.subtitle;
+        $("courseNumber").textContent = n;
+        $("description").textContent = c.description;
+        $("duration").textContent = c.duration;
+        $("level").textContent = c.level;
+        $("futureScope").textContent =
+          c.future ||
+          "इस कोर्स से जुड़ी आगे की पढ़ाई और नौकरी के अवसरों की तैयारी कर सकते हैं।";
+        $("levelChip").textContent = c.level.toUpperCase();
+        $("skills").innerHTML = c.skills
+          .map(
+            (s, i) =>
+              `<div class="skill" style="animation-delay:${i * 65}ms"><span class="tick">✓</span>${s}</div>`,
+          )
+          .join("");
+        $("progressBar").style.width =
+          ((selected + 1) / courses.length) * 100 + "%";
+        drawList();
+      }
+      $("search").addEventListener("input", (e) => {
+        query = e.target.value.toLowerCase().trim();
+        drawList();
+      });
+      $("prev").addEventListener("click", () => selectCourse(selected - 1));
+      $("next").addEventListener("click", () => selectCourse(selected + 1));
+      selectCourse(0);
+    </script>
+  </body>
+</html>
